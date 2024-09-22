@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>WebSocket API Documentation</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        h1, h2 { color: #2E4053; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        code { background-color: #f9f9f9; padding: 2px 4px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>WebSocket API Documentation</h1>
+    <p>
+        This document describes the WebSocket interfaces provided by the
+ application for real-time updates.
+        WebSocket endpoints allow for notifications about changes to 
+Ships and Containers, including insert, update, and delete operations.
+    </p>
+
+    <h2>WebSocket Endpoints</h2>
+    <table>
+        <tbody><tr>
+            <th>Endpoint</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>/topic/ships</td>
+            <td>Sends updates regarding Ship entities. This includes information about new, updated, or deleted ships.</td>
+        </tr>
+        <tr>
+            <td>/topic/containers</td>
+            <td>Sends updates regarding Container entities. This includes information about new, updated, or deleted containers.</td>
+        </tr>
+    </tbody></table>
+
+    <h2>Data Types</h2>
+    <h3>Ship</h3>
+    <p>The Ship object represents a ship entity and has the following structure:</p>
+    <pre>{
+    "id": Long,
+    "name": String,
+    "capacity": Integer,
+    "currentLocationName": String,
+    "status": String, // One of: "DOCKED", "AT_SEA", "UNDER_MAINTENANCE"
+    "containers": Set&lt;Container&gt; // List of associated containers
+}
+    </pre>
+
+    <h3>Container</h3>
+    <p>The Container object represents a container entity and has the following structure:</p>
+    <pre>{
+    "id": Long,
+    "description": String,
+    "weight": Double,
+    "ship": Ship // Associated ship object
+}
+    </pre>
+
+    <h2>Operation Identification</h2>
+    <p>To determine the type of operation (Insert, Update, Delete) based on the message content:</p>
+    <ul>
+        <li>Insert: A new Ship or Container object is sent without a preceding identifier.</li>
+        <li>Update: An existing Ship or Container object is sent with modified attributes, identified by the object's id.</li>
+        <li>Delete: A message in the format "deleted:{id}" is sent, where {id} is the identifier of the deleted entity.</li>
+    </ul>
+
+
+</body></html>
